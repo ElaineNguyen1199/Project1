@@ -8,6 +8,7 @@ class AccountGUI:
     def __init__(self, window):
         self.window = window
 
+        Label(self.window, text="ATM").pack(pady=10)
         frame_first_name = Frame(self.window)
         Label(frame_first_name, text="First Name:").pack(side=LEFT, padx=5)
         self.first_name_entry = Entry(frame_first_name)
@@ -26,8 +27,8 @@ class AccountGUI:
         self.pin_entry.pack(side=LEFT, padx=5)
         frame_pin.pack(pady=5)
 
-        self.enter_button = Button(self.window, text="Enter", command=self.handle_login)
-        self.enter_button.pack(pady=10)
+        self.search_button = Button(self.window, text="Search", command=self.handle_login)
+        self.search_button.pack(pady=10)
 
         self.message_label = Label(self.window, text="")
         self.message_label.pack(pady=10)
@@ -49,7 +50,7 @@ class AccountGUI:
 
         account_name = f"{first_name} {last_name}"
         if self.load_account(account_name, pin):
-            self.message_label.config(text=f"Welcome, {first_name}!")
+            self.message_label.config(text=f"Welcome, {first_name} {last_name}!")
             self.display_account_options()
         else:
             if messagebox.askyesno("New Account", "Account not found. Would you like to create one?"):
@@ -72,9 +73,12 @@ class AccountGUI:
         self.amount_entry.pack(side=LEFT, padx=5)
         frame_amount.pack(pady=10)
 
-        Button(self.window, text="Enter", command=self.handle_transaction).pack(pady=5)
-        Button(self.window, text="Exit", command=self.window.quit).pack(pady=5)
+        frame_buttons = Frame(self.window)
+        Button(frame_buttons, text="Enter", command=self.handle_transaction).pack(side=LEFT, padx=10)
+        Button(frame_buttons, text="Exit", command=self.window.quit).pack(side = LEFT, padx=10)
+        frame_buttons.pack(pady = 10)
 
+        #Fix me needs to show the account balance in real time when the user hits enter when either depositing or withdrawing the money
         Label(self.window, text=f"Your account balance is: ${self.account.get_balance():.2f}").pack(pady=10)
 
     def handle_transaction(self):
