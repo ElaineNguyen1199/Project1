@@ -1,38 +1,39 @@
-import tkinter as tk
-#from tkinter import *
+from tkinter import *
 from tkinter import messagebox
-from main import Account
+from logic import *
 import csv
 import os
 
 class AccountGUI:
-    def __init__(self):
-        self.window = tk.Tk()
-        self.window.title("ATM")
-        self.window.geometry('300x400')
-        self.window.resizable(False, False)
+    def __init__(self, window):
+        self.window = window
 
-        # Input boxes and labels
-        tk.Label(self.window, text="First Name:").grid(row=0, column=0, pady=5)
-        self.first_name_entry = tk.Entry(self.window)
-        self.first_name_entry.grid(row=0, column=1)
+        frame_first_name = Frame(self.window)
+        Label(frame_first_name, text="First Name:").pack(side=LEFT, padx=5)
+        self.first_name_entry = Entry(frame_first_name)
+        self.first_name_entry.pack(side=LEFT, padx=5)
+        frame_first_name.pack(pady=5)
 
-        tk.Label(self.window, text="Last Name:").grid(row=1, column=0, pady=5)
-        self.last_name_entry = tk.Entry(self.window)
-        self.last_name_entry.grid(row=1, column=1)
+        frame_last_name = Frame(self.window)
+        Label(frame_last_name, text="Last Name:").pack(side=LEFT, padx=5)
+        self.last_name_entry = Entry(frame_last_name)
+        self.last_name_entry.pack(side=LEFT, padx=5)
+        frame_last_name.pack(pady=5)
 
-        tk.Label(self.window, text="Enter PIN:").grid(row=2, column=0, pady=5)
-        self.pin_entry = tk.Entry(self.window, show="*") #This allows you to hide the users inputs with a *
-        self.pin_entry.grid(row=2, column=1)
+        frame_pin = Frame(self.window)
+        Label(frame_pin, text="Enter PIN:").pack(side=LEFT, padx=5)
+        self.pin_entry = Entry(frame_pin, show="*")  # Hides user input with *
+        self.pin_entry.pack(side=LEFT, padx=5)
+        frame_pin.pack(pady=5)
 
-        self.enter_button = tk.Button(self.window, text="Enter", command=self.handle_login)
-        self.enter_button.grid(row=3, column=0, columnspan=2, pady=10)
+        self.enter_button = Button(self.window, text="Enter", command=self.handle_login)
+        self.enter_button.pack(pady=10)
 
-        self.message_label = tk.Label(self.window, text="")
-        self.message_label.grid(row=4, column=0, columnspan=2, pady=10)
+        self.message_label = Label(self.window, text="")
+        self.message_label.pack(pady=10)
 
-        self.withdraw_var = tk.BooleanVar()
-        self.deposit_var = tk.BooleanVar()
+        self.withdraw_var = BooleanVar()
+        self.deposit_var = BooleanVar()
         self.amount_entry = None
         self.account = None
         self.window.mainloop()
@@ -46,7 +47,6 @@ class AccountGUI:
             messagebox.showerror("Error", "Please enter valid details.")
             return
 
-        # Checks to see if the account already exists
         account_name = f"{first_name} {last_name}"
         if self.load_account(account_name, pin):
             self.message_label.config(text=f"Welcome, {first_name}!")
@@ -59,19 +59,23 @@ class AccountGUI:
                 self.display_account_options()
 
     def display_account_options(self):
-        tk.Label(self.window, text="What would you like to do?").grid(row=5, column=0, columnspan=2, pady=10)
+        Label(self.window, text="What would you like to do?").pack(pady=10)
 
-        tk.Radiobutton(self.window, text="Withdraw", variable=self.withdraw_var, value=True).grid(row=6, column=0)
-        tk.Radiobutton(self.window, text="Deposit", variable=self.withdraw_var, value=False).grid(row=6, column=1)
+        frame_radio_buttons = Frame(self.window)
+        Radiobutton(frame_radio_buttons, text="Withdraw", variable=self.withdraw_var, value=True).pack(side=LEFT, padx=10)
+        Radiobutton(frame_radio_buttons, text="Deposit", variable=self.withdraw_var, value=False).pack(side=LEFT, padx=10)
+        frame_radio_buttons.pack(pady=5)
 
-        tk.Label(self.window, text="Amount:").grid(row=7, column=0)
-        self.amount_entry = tk.Entry(self.window)
-        self.amount_entry.grid(row=7, column=1)
+        frame_amount = Frame(self.window)
+        Label(frame_amount, text="Amount:").pack(side=LEFT, padx=5)
+        self.amount_entry = Entry(frame_amount)
+        self.amount_entry.pack(side=LEFT, padx=5)
+        frame_amount.pack(pady=10)
 
-        tk.Button(self.window, text="Enter", command=self.handle_transaction).grid(row=8, column=0, pady=5)
-        tk.Button(self.window, text="Exit", command=self.window.quit).grid(row=8, column=1, pady=5)
-        #FIX ME NEED TO SHOW THE ACTUAL BALANCE IN REAL TIME
-        tk.Label(self.window, text=f"Your account balance is: ${self.account.get_balance():.2f}").grid(row=9, column=0, columnspan=2)
+        Button(self.window, text="Enter", command=self.handle_transaction).pack(pady=5)
+        Button(self.window, text="Exit", command=self.window.quit).pack(pady=5)
+
+        Label(self.window, text=f"Your account balance is: ${self.account.get_balance():.2f}").pack(pady=10)
 
     def handle_transaction(self):
         try:
@@ -111,7 +115,3 @@ class AccountGUI:
             return False
         except FileNotFoundError:
             return False
-
-
-if __name__ == "__main__":
-    AccountGUI()
