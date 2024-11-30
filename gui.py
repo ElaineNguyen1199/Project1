@@ -1,13 +1,16 @@
-import os
 import tkinter as tk
+#from tkinter import *
 from tkinter import messagebox
 from main import Account
 import csv
+import os
 
 class AccountGUI:
     def __init__(self):
         self.window = tk.Tk()
         self.window.title("ATM")
+        self.window.geometry('300x400')
+        self.window.resizable(False, False)
 
         # Input boxes and labels
         tk.Label(self.window, text="First Name:").grid(row=0, column=0, pady=5)
@@ -94,7 +97,7 @@ class AccountGUI:
             writer = csv.writer(file, quoting=csv.QUOTE_MINIMAL)
             if not file_exists:
                 writer.writerow(["Name", "Pin", "Balance"])
-            writer.writerow([name, pin, f'{balance:.2f}'])
+            writer.writerow([name, pin, f'${balance:.2f}'])
 
     def load_account(self, name, pin):
         try:
