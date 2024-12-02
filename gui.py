@@ -6,6 +6,10 @@ import os
 
 class AccountGUI:
     def __init__(self, window):
+        """
+        Creates the AccountGUI with the main Tkinter window and sets up the login interface
+        :param window: The main Tkinter window for the application
+        """
         self.window = window
 
         Label(self.window, text="ATM").pack(pady=10)
@@ -39,7 +43,12 @@ class AccountGUI:
         self.account = None
         self.window.mainloop()
 
-    def handle_login(self):
+    def handle_login(self) -> None:
+        """
+        Manages the login or account creation process. Verifies user inputs and can load an existing account or create
+        a new one if not found.
+        :return: None (explicitly or exits early if input validation fails.)
+        """
         first_name = self.first_name_entry.get().strip()
         last_name = self.last_name_entry.get().strip()
         pin = self.pin_entry.get().strip()
@@ -59,7 +68,10 @@ class AccountGUI:
                 self.message_label.config(text=f"Welcome, {first_name}!")
                 self.display_account_options()
 
-    def display_account_options(self):
+    def display_account_options(self) -> None:
+        """
+        Displays the account options withdraw and deposit button and shows the current account balance.
+        """
         Label(self.window, text="What would you like to do?").pack(pady=10)
 
         frame_radio_buttons = Frame(self.window)
@@ -78,11 +90,13 @@ class AccountGUI:
         Button(frame_buttons, text="Exit", command=self.window.quit).pack(side = LEFT, padx=10)
         frame_buttons.pack(pady = 10)
 
-        #Fix me needs to show the account balance in real time when the user hits enter when either depositing or withdrawing the money
         self.balance_label = (Label(self.window, text=f"Your account balance is: ${self.account.get_balance():.2f}"))
         self.balance_label.pack(pady =10)
 
-    def handle_transaction(self):
+    def handle_transaction(self) -> None:
+        """
+        Processes the users transaction from either withdrawing or depositing and updates the account balance.
+        """
         try:
             amount = float(self.amount_entry.get())
             if self.withdraw_var.get():
@@ -101,7 +115,13 @@ class AccountGUI:
         except ValueError:
             messagebox.showerror("Error", "Invalid amount entered.")
 
-    def save_account(self, name, pin, balance):
+    def save_account(self, name: str, pin: int, balance: float) -> None:
+        """
+        writes the user account information to a CSV file.
+        :param name: User's account name
+        :param pin: User's Pin
+        :param balance: User's account balance
+        """
         file_exists = os.path.isfile("ATM.csv")
         with open("ATM.csv", mode="a", newline="") as file:
             writer = csv.writer(file, quoting=csv.QUOTE_MINIMAL)
@@ -109,7 +129,13 @@ class AccountGUI:
                 writer.writerow(["Name", "Pin", "Balance"])
             writer.writerow([name, pin, f'${balance:.2f}'])
 
-    def load_account(self, name, pin):
+    def load_account(self, name: str, pin: int) -> bool:
+        """
+        Loads the account details from the CSV file.
+        :param name: User's account name
+        :param pin: User's pin
+        :return: True or False if the account has been found or not been found.
+        """
         try:
             with open("ATM.csv", mode="r") as file:
                 reader = csv.reader(file)

@@ -1,9 +1,12 @@
 from gui import *
 
-def main():
+def main() -> None:
+    """
+    Creates the main Tkinter window
+    """
     window = Tk()
     window.title("ATM")
-    window.geometry('300x400')
+    window.geometry('300x500')
     window.resizable(False, False)
     AccountGUI(window)
     window.mainloop()
