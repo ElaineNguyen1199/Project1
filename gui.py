@@ -79,7 +79,8 @@ class AccountGUI:
         frame_buttons.pack(pady = 10)
 
         #Fix me needs to show the account balance in real time when the user hits enter when either depositing or withdrawing the money
-        Label(self.window, text=f"Your account balance is: ${self.account.get_balance():.2f}").pack(pady=10)
+        self.balance_label = (Label(self.window, text=f"Your account balance is: ${self.account.get_balance():.2f}"))
+        self.balance_label.pack(pady =10)
 
     def handle_transaction(self):
         try:
@@ -93,6 +94,7 @@ class AccountGUI:
 
             if success:
                 self.save_account(self.account.get_name(), self.pin_entry.get(), self.account.get_balance())
+                self.balance_label.config(text=f"Your account balance is: ${self.account.get_balance():.2f}")
                 messagebox.showinfo("Success", f"{action} successful! New balance: ${self.account.get_balance():.2f}")
             else:
                 messagebox.showerror("Error", f"{action} failed. Check balance or amount.")
