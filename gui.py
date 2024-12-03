@@ -142,7 +142,8 @@ class AccountGUI:
                 next(reader)
                 for row in reader:
                     if row[0] == name and row[1] == pin:
-                        self.account = Account(name, float(row[2]))
+                        balance = float(row[2].replace("$", "").strip()) #This helps not get an error saying can't convert string to into float because of the $
+                        self.account = Account(name, balance)
                         return True
             return False
         except FileNotFoundError:
