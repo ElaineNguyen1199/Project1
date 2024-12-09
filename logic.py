@@ -3,7 +3,7 @@ class Account:
     A class that represents a bank account with basic functionalities:
     Deposit, Withdrawal, and balance management.
     """
-    def __init__(self, name: str, balance: float =0.0) -> None:
+    def __init__(self, name: str, balance: float = 0.0) -> None:
         """
         Initializes an Account object
         :param name: User's account name
@@ -29,7 +29,7 @@ class Account:
         """
         withdraws an amount from the account.
         :param amount: The amount to withdraw. Must be greater than 0 and less than or equal to the current balance.
-        :return:
+        :return: True or False if the amount was able to withdraw
         """
         if amount > 0 and amount <= self.__account_balance:
             self.__account_balance -= amount
