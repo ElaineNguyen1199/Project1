@@ -41,7 +41,6 @@ class AccountGUI:
         self.deposit_var = BooleanVar()
         self.amount_entry = None
         self.account = None
-        self.window.mainloop()
 
     def handle_login(self) -> None:
         """
