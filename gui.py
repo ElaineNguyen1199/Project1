@@ -123,7 +123,7 @@ class AccountGUI:
         """
         file_exists = os.path.isfile("ATM.csv")
         with open("ATM.csv", mode="a", newline="") as file:
-            writer = csv.writer(file, quoting=csv.QUOTE_MINIMAL)
+            writer = csv.writer(file, quoting=csv.QUOTE_NONE)
             if not file_exists:
                 writer.writerow(["Name", "Pin", "Balance"])
             writer.writerow([name, pin, f'${balance:.2f}'])
